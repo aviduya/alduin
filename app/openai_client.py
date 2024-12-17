@@ -24,8 +24,3 @@ def get_task_label(task_content, project_ids):
         return label
     except Exception as e:
         print(f"Error with OpenAI API: {e}")
-
-
-if __name__ == "__main__":
-    project = {'2345107997': 'Inbox', '2345108005': 'My work ', '2345108006': 'Home ', '2345116827': 'Personal ', '2345122373': "Philippines & Japan Trip 25' ", '2345150791': 'Finances', '2345150947': 'Shopping & Groceries'}
-    get_task_label("Clean and cook in the backyard", project_ids=project)
