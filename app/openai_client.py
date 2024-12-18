@@ -1,13 +1,30 @@
-from openai import OpenAI
-from dotenv import load_dotenv
+import logging
 import os
+from dotenv import load_dotenv
+from openai import OpenAI
 
+# Configure the basic logging setup
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s'
+)
+logger = logging.getLogger(__name__)  # Use a named logger
+
+# Load environment variables
 load_dotenv()
+logger.info("Environment variables loaded.")
 
+# Initialize OpenAI client
 OPEN_AI_API_KEY = os.getenv("OPENAI_API_KEY")
+if not OPEN_AI_API_KEY:
+    logger.error("OPENAI_API_KEY not found in environment variables.")
+    raise EnvironmentError("OPENAI_API_KEY is missing. Please check your .env file.")
+
 client = OpenAI(api_key=f"{OPEN_AI_API_KEY}")
+logger.info("OpenAI client initialized successfully.")
 
 def get_task_label(task_content, project_ids):
+    logger.debug("get_task_label called with task_content: %s and project_ids: %s", task_content, project_ids)
     try:
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -20,7 +37,8 @@ def get_task_label(task_content, project_ids):
             ]
         )
         label = completion.choices[0].message.content
-        print(f"Task: '{task_content}' -> Label: '{label}'")
+        logger.info("Task classified successfully. Task: '%s' -> Label: '%s'", task_content, label)
         return label
     except Exception as e:
-        print(f"Error with OpenAI API: {e}")
+        logger.error(f"Error occurred while classifying task with OpenAI API: {e}", exc_info=True)
+        raise  # Re-raise the exception after logging
