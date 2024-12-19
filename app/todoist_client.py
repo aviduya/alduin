@@ -38,7 +38,6 @@ def get_inbox_tasks(inbox_proj_id):
     try:
         tasks = API.get_tasks()
         for x in tasks:
-            logger.debug("Project ID: %s, Task: %s, Task ID: %s", x.project_id, x.content, x.id)
             if x.project_id == str(inbox_proj_id):
                 inbox_tasks.append(x)
         logger.info("Retrieved %d tasks for inbox project ID %s", len(inbox_tasks), inbox_proj_id)
@@ -55,7 +54,6 @@ def get_project_ids():
         projects = API.get_projects()
         for project in projects:
             stripped_name = _strip_emoji(project.name)
-            logger.debug("Project Name: %s - ID: %s", stripped_name, project.id)
             project_ids[project.id] = stripped_name
         logger.info("Successfully retrieved %d projects.", len(project_ids))
         return project_ids

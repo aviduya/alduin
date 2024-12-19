@@ -41,4 +41,4 @@ def get_task_label(task_content, project_ids):
         return label
     except Exception as e:
         logger.error(f"Error occurred while classifying task with OpenAI API: {e}", exc_info=True)
-        raise  # Re-raise the exception after logging
+        raise

@@ -11,17 +11,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def start_scheduler():
-    """
-    Starts the scheduler to run the `process_tasks` function every 3 minutes.
-    """
     logger.info("Initializing the scheduler...")
-    schedule.every(3).minutes.do(process_tasks)
-    logger.info("Scheduler started. Running `process_tasks` every 3 minutes.")
+    schedule.every(10).minutes.do(process_tasks)
+    logger.info("Scheduler started. Running `process_tasks` every 10 minutes.")
 
     try:
         while True:
             schedule.run_pending()
-            time.sleep(1)  # Sleep to avoid busy waiting
+            time.sleep(1)
     except KeyboardInterrupt:
         logger.warning("Scheduler stopped manually (KeyboardInterrupt).")
     except Exception as e:
